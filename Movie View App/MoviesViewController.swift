@@ -9,13 +9,18 @@
 import UIKit
 import AFNetworking
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var refreshControl: UIRefreshControl!
     var movies: [NSDictionary]?     //? makes it optional
     var endpoint: String!
+    
+    var filteredMovies: [NSDictionary]!
+    
+    //var searchController: UISearchController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +31,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         tableView.dataSource = self
         tableView.delegate = self
+        
+        searchBar.delegate = self
+        
+        
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string:"https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
@@ -43,7 +52,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                         data, options:[]) as? NSDictionary {
                             NSLog("response: \(responseDictionary)")
                             self.movies = responseDictionary["results"] as! [NSDictionary]
+                            self.filteredMovies = self.movies
                             self.tableView.reloadData()
+                            //self.filteredMovies = self.movies
                     }
                 }
         });
@@ -56,18 +67,27 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Dispose of any resources that can be recreated.
     }
     
+    // Determine the number of rows
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let movies = movies {    // in case our network is not working 
+        /*
+        if let movies = movies {    // in case our network is not working
             return movies.count
         }
         else {
            return 0
+        }*/
+        
+        if let movies = filteredMovies {
+            return filteredMovies.count
+        } else {
+            return 0
         }
     }
     
+    // Set the labels from dictionary
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
-        let movie = movies![indexPath.row]
+        let movie = filteredMovies![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
         
@@ -96,12 +116,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             dispatch_get_main_queue(), closure)
     }
     
+    // Refresh
     func onRefresh() {
         delay(2, closure: {
             self.refreshControl.endRefreshing()
         })
     }
-
+    
+    // Optional feature: Search Bar
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredMovies = searchText.isEmpty ? movies : movies!.filter({(movie: NSDictionary) -> Bool in
+            let title = movie["title"] as! String
+            return title.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil
+        })
+        
+        tableView.reloadData()
+    }
     
     // MARK: - Navigation
 
