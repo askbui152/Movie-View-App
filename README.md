@@ -2,7 +2,7 @@
 
 **Movie View App** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **3** hours spent in total
+Time spent: **5** hours spent in total
 
 ## User Stories
 
@@ -17,7 +17,7 @@ The following **optional** features are implemented:
 
 - [ ] User sees an error message when there's a networking error.
 - [ ] Movies are displayed using a CollectionView instead of a TableView.
-- [ ] User can search for a movie.
+- [X] User can search for a movie.
 - [ ] All images fade in as they are loading.
 - [ ] Customize the UI.
 
@@ -28,8 +28,8 @@ The following **additional** features are implemented:
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
+<img src='http://imgur.com/0qzRW8H.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-Please refer to Project 2, as it is combined with it
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -66,7 +66,7 @@ The following **required** functionality is completed:
 
 - [X] User can view movie details by tapping on a cell.
 - [X] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
-- [X] Customize the selection effect of the cell.
+- [ ] Customize the selection effect of the cell.
 
 The following **optional** features are implemented:
 
@@ -80,7 +80,6 @@ The following **additional** features are implemented:
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
-Not done yet
 <img src='http://imgur.com/50L5gkg.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
