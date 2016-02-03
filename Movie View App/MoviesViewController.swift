@@ -78,7 +78,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }*/
         
         if let movies = filteredMovies {
-            return filteredMovies.count
+            return filteredMovies!.count
         } else {
             return 0
         }
@@ -102,10 +102,25 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
         
+        let backgroundColor = UIView()
+        backgroundColor.backgroundColor = UIColor.cyanColor()
+        cell.selectedBackgroundView = backgroundColor
+        
         
         print("row \(indexPath.row)")
         return cell
     }
+    
+    /*
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let selectedCell:UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+        selectedCell.contentView.backgroundColor = UIColor.blueColor()
+    }
+    
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        let deselectedCell:UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+        deselectedCell.contentView.backgroundColor = UIColor.whiteColor()
+    }*/
     
     func delay(delay:Double, closure:()->()) {
         dispatch_after(
@@ -142,6 +157,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
         searchBar.text = ""
+        filteredMovies = movies
         searchBar.resignFirstResponder()
         tableView.reloadData()
     }
@@ -152,7 +168,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let cell = sender as! UITableViewCell
         let indexPath = tableView.indexPathForCell(cell)
-        let movie = movies![indexPath!.row]
+        let movie = filteredMovies![indexPath!.row]
         
         let detailViewController = segue.destinationViewController as! DetailViewController
         
